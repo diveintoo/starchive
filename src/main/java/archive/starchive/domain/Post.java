@@ -21,12 +21,14 @@ public class Post {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Column(length = 50)
     private String title;
 
     private String subject;
 
     private String source;
 
+    @Column(length = 1000)
     private String content;
 
     private LocalDate occurTime;
