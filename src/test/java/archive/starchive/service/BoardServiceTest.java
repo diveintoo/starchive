@@ -38,8 +38,8 @@ class BoardServiceTest {
     @DisplayName("Board 조회 테스트 : 성공")
     void testFindAll() {
         List<Board> boards = new ArrayList<>();
-        for(int i = 0; i < 7; i++) {
-            boards.add(new Board(Long.valueOf(i), "board" + Integer.toString(i)));
+        for(int i = 1; i < 8; i++) {
+            boards.add(Board.builder().id(Long.valueOf(i)).name("board" + Integer.toString(i)).build());
         }
         Page<Board> pagedResponse = new PageImpl<>(boards);
 
@@ -48,7 +48,7 @@ class BoardServiceTest {
         Page<Board> foundPage = boardService.findAll(PageRequest.of(0, 10));
 
         assertEquals(7, foundPage.getTotalElements());
-        assertEquals("board3", foundPage.getContent().get(3).getName());
-        assertEquals(5, foundPage.getContent().get(5).getId());
+        assertEquals("board4", foundPage.getContent().get(3).getName());
+        assertEquals(6, foundPage.getContent().get(5).getId());
     }
 }

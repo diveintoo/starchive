@@ -1,11 +1,13 @@
 package archive.starchive.repository;
 
+import archive.starchive.config.JpaAuditingConfig;
 import archive.starchive.domain.Board;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestPropertySource;
@@ -13,6 +15,7 @@ import org.springframework.test.context.TestPropertySource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
+@Import(JpaAuditingConfig.class)
 @TestPropertySource(locations = "classpath:application-test.yml")
 class BoardRepositoryTest {
 
@@ -21,8 +24,8 @@ class BoardRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        for(int i = 0; i < 10; i++) {
-            Board board = new Board(Long.valueOf(i), "board" + Integer.toString(i));
+        for(int i = 1; i < 11; i++) {
+            Board board = Board.builder().name("board" + Integer.toString(i)).build();
             boardRepository.save(board);
         }
     }
