@@ -1,21 +1,27 @@
 package archive.starchive.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="member_id")
     private Long id;
 
+    @Column(nullable = false, length = 30, unique = true)
     private String username;
 
     private String password;
 
-    private String email;
+    @Column(nullable = false, length = 15)
+    private String nickName;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }
