@@ -1,6 +1,7 @@
 package archive.starchive.security;
 
 import archive.starchive.security.filter.JsonUsernamePasswordAuthenticationFilter;
+import archive.starchive.service.impl.LoginService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 public class SecurityConfig {
 
     private final ObjectMapper objectMapper;
+    private final LoginService loginService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -51,6 +53,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());
+        provider.setUserDetailsService(loginService);
         return new ProviderManager(provider);
     }
 
