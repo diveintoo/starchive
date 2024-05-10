@@ -1,8 +1,11 @@
 package archive.starchive.security;
 
 import archive.starchive.security.filter.JsonUsernamePasswordAuthenticationFilter;
+import archive.starchive.security.handler.LoginFailureHandler;
+import archive.starchive.security.handler.LoginSuccessJWTProvideHandler;
 import archive.starchive.service.impl.LoginService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +22,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @EnableWebSecurity
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final ObjectMapper objectMapper;
@@ -58,9 +62,21 @@ public class SecurityConfig {
     }
 
     @Bean
+    public LoginSuccessJWTProvideHandler loginSuccessJWTProvideHandler(){
+        return new LoginSuccessJWTProvideHandler();
+    }
+
+    @Bean
+    public LoginFailureHandler loginFailureHandler(){
+        return new LoginFailureHandler();
+    }
+
+    @Bean
     public JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordLoginFilter() {
         JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordLoginFilter = new JsonUsernamePasswordAuthenticationFilter(objectMapper);
         jsonUsernamePasswordLoginFilter.setAuthenticationManager(authenticationManager());
+        jsonUsernamePasswordLoginFilter.setAuthenticationFailureHandler(loginFailureHandler());
+        jsonUsernamePasswordLoginFilter.setAuthenticationSuccessHandler(loginSuccessJWTProvideHandler());
         return jsonUsernamePasswordLoginFilter;
     }
 }
