@@ -1,6 +1,6 @@
 package archive.starchive.controller;
 
-import archive.starchive.config.SecurityConfig;
+import archive.starchive.security.SecurityConfig;
 import archive.starchive.domain.Board;
 import archive.starchive.service.BoardService;
 import org.junit.jupiter.api.DisplayName;
